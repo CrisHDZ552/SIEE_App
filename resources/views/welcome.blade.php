@@ -6,8 +6,8 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <h1 class="text-center">Welcome to SIIE</h1>
-                <p class="text-center">SIIE is a system for evaluating students.</p>
+                <h1 class="text-center">Bienvenido a SIIE</h1>
+                <p class="text-center">SIIE es un sistema de evaluación de estudiantes.</p>
             </div>
         </div>
     </div>
