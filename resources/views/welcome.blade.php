@@ -6,8 +6,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <h1 class="text-center">Bienvenido a SIIE</h1>
-                <p class="text-center">SIIE es un sistema de evaluación de estudiantes.</p>
+                <h1 class="text-center">SIIE - Evaluación</h1>
             </div>
         </div>
     </div>
@@ -40,7 +39,7 @@
             </div>
         </div>
         <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-4 justify-content-center">
-            @for ($i = 0; $i < 9; $i++)
+            @for ($i = 0; $i < 800; $i++)
                 <div class="col">
                     <div class="card folder-card h-100 position-relative shadow-sm border-0 text-center bg-white">
                         <div class="card-body py-4 d-flex flex-column align-items-center justify-content-center">
