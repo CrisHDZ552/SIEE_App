@@ -11,7 +11,6 @@
         </div>
     </div>
     <div class="container my-4">
-        <!-- Buscador con botón de filtro -->
         <div class="search-container">
             <div class="input-group search-input-group">
                 <span class="input-group-text bg-transparent border-0 d-flex align-items-center">
