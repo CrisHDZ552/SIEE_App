@@ -1,7 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EscuelaController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [EscuelaController::class, 'index']);
+Route::get('/escuelas/search', [EscuelaController::class, 'search'])->name('escuelas.search');
+
+
+
