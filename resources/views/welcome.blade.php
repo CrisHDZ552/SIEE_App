@@ -23,7 +23,7 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-custom border-0 shadow mt-2">
                     <li>
-                        <h6 class="dropdown-header fw-bold text-dark">Filtrar por:</h6>
+                        <h6 class="dropdown-header fw-bold text-dark">Filtrar por: </h6>
                     </li>
                     <li>
                         <a class="dropdown-item dropdown-item-custom" href="#" data-filter="ctt" id="filter-ctt-item">
