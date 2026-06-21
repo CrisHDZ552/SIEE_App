@@ -47,7 +47,7 @@
         </div>
         <!--boton para crear carpetas -->
         <div class="d-flex align-items-center gap-0">
-            <a href="{{ route('escuelas.creaRR') }}" class="btn btn-filter" type="button" style="border-radius: 15px;">
+            <a href="{{ route('escuelas.creaRR') }}" class="btn btn-filter" type="button" style="border-radius: 15px;" title="Agregar nueva escuela">
                 <span id="aggregate-btn-text"></span>
                 <i class="bi bi-folder-plus fs-3 text-primary"></i>
             </a>
