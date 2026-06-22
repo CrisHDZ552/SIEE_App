@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $escuelas = [
-            ['numero_escuela' => '14984984', 'ctt' => 'Ct2514c51'],
+/*            ['numero_escuela' => '14984984', 'ctt' => 'Ct2514c51'],
             ['numero_escuela' => '14984985', 'ctt' => 'Ct2514c52'],
             ['numero_escuela' => '14984986', 'ctt' => 'Ct2514c53'],
             ['numero_escuela' => '12345678', 'ctt' => 'Ct123456a'],
@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
             ['numero_escuela' => '77778888', 'ctt' => 'Ct777788f'],
             ['numero_escuela' => '99990000', 'ctt' => 'Ct999900g'],
             ['numero_escuela' => '15151515', 'ctt' => 'Ct151515h'],
-            ['numero_escuela' => '26262626', 'ctt' => 'Ct262626i'],
+            ['numero_escuela' => '26262626', 'ctt' => 'Ct262626i'],*/
         ];
 
         foreach ($escuelas as $escuela) {

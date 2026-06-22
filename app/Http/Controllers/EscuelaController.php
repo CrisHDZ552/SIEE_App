@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Escuela;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class EscuelaController extends Controller
 {
@@ -58,6 +59,50 @@ class EscuelaController extends Controller
         //$escuela->user_id = Auth::id();  //Guardar el usuario que creo la carpeta
         $escuela->save();
 
+        // Crear la carpeta en public/archivos
+        $folderName = $escuela->numero_escuela . '_' . uniqid();
+        $path = public_path('archivos/' . $folderName);
+
+        File::makeDirectory($path, 0755, true, true);
+
         return redirect('/');
+    }
+
+    public function show(Escuela $escuela)
+    {
+        // Obtener la carpeta de la escuela en public/archivos
+        $archivosPath = public_path('archivos');
+
+        // Buscar la carpeta que comience con el número de escuela
+        $carpetas = File::glob($archivosPath . '/' . (string)$escuela->numero_escuela . '_*');
+        $escuelaCarpeta = null;
+
+        if (!empty($carpetas)) {
+            $escuelaCarpeta = basename($carpetas[0]);
+        }
+
+        if (!$escuelaCarpeta) {
+            return redirect('/')->with('error', 'Carpeta de escuela no encontrada');
+        }
+
+        // Obtener el contenido de la carpeta
+        $rutaCarpeta = $archivosPath . '/' . $escuelaCarpeta;
+        $contenido = [];
+
+        if (File::isDirectory($rutaCarpeta)) {
+            // Obtener tanto archivos como directorios
+            $items = File::files($rutaCarpeta);
+            $subdirectorios = File::directories($rutaCarpeta);
+
+            foreach ($items as $item) {
+                $contenido[] = [
+                    'nombre' => basename($item),
+                    'ruta' => 'archivos/' . $escuelaCarpeta . '/' . basename($item),
+                    'tipo' => 'file'
+                ];
+            }
+        }
+
+        return view('Escuelas.show', compact('escuela', 'contenido', 'escuelaCarpeta'));
     }
 }
