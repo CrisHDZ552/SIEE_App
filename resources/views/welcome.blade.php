@@ -99,7 +99,4 @@
 
 @push('scripts')
 <script src="{{ asset('scripts/welcome_buscador.js') }}"></script>
-<script>
-    // Aquí irá nuestro código JavaScript para el menú contextual
-</script>
 @endpush
