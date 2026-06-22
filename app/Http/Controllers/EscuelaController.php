@@ -101,6 +101,14 @@ class EscuelaController extends Controller
                     'tipo' => 'file'
                 ];
             }
+
+            foreach ($subdirectorios as $subdirectorio) {
+                $contenido[] = [
+                    'nombre' => basename($subdirectorio),
+                    'ruta' => 'archivos/' . $escuelaCarpeta . '/' . basename($subdirectorio),
+                    'tipo' => 'dir'
+                ];
+            }
         }
 
         return view('Escuelas.show', compact('escuela', 'contenido', 'escuelaCarpeta'));
