@@ -14,7 +14,7 @@ class EscuelaController extends Controller
         // Obtener todas las escuelas iniciales
         $escuelas = Escuela::all();
         return view('welcome', compact('escuelas'));
-    }
+    } 
 
     public function search(Request $request)
     {
@@ -60,7 +60,7 @@ class EscuelaController extends Controller
         $escuela->save();
 
         // Crear la carpeta en public/archivos
-        $folderName = $escuela->numero_escuela . '_' . uniqid();
+        $folderName = $escuela->numero_escuela;
         $path = public_path('archivos/' . $folderName);
 
         File::makeDirectory($path, 0755, true, true);
@@ -68,47 +68,16 @@ class EscuelaController extends Controller
         return redirect('/');
     }
 
-    public function CrearArchivosEscuelas()
-    {
-        return view('Archivos.CrearA');
-    }
-
-    public function ValidarArchivosEscuelas(Request $request)
-    {
-        $request->validate([     //Validar que los campos no esten vacios y max caracteres
-            'numero_escuela' => 'required|max:15|unique:escuelas,numero_escuela',
-            'ctt' => 'required|max:15',
-        ]);
-
-        $escuela = new Escuela();
-        $escuela->numero_escuela = $request->numero_escuela; //Darle valor al objeto
-        $escuela->ctt = $request->ctt;
-        //$escuela->user_id = Auth::id();  //Guardar el usuario que creo la carpeta
-        $escuela->save();
-
-        // Crear la carpeta en public/archivos
-        $folderName = $escuela->numero_escuela . '_' . uniqid();
-        $path = public_path('archivos/' . $folderName);
-
-        File::makeDirectory($path, 0755, true, true);
-
-        return redirect('escuelas.show');
-    }
-
     public function show(Escuela $escuela)
     {
         // Obtener la carpeta de la escuela en public/archivos
         $archivosPath = public_path('archivos');
 
-        // Buscar la carpeta que comience con el número de escuela
-        $carpetas = File::glob($archivosPath . '/' . (string)$escuela->numero_escuela . '_*');
-        $escuelaCarpeta = null;
+        // Buscar la carpeta de la escuela
+        $escuelaCarpeta = (string)$escuela->numero_escuela;
+        $rutaCarpeta = $archivosPath . '/' . $escuelaCarpeta;
 
-        if (!empty($carpetas)) {
-            $escuelaCarpeta = basename($carpetas[0]);
-        }
-
-        if (!$escuelaCarpeta) {
+        if (!File::isDirectory($rutaCarpeta)) {
             return redirect('/')->with('error', 'Carpeta de escuela no encontrada');
         }
 
