@@ -65,9 +65,16 @@
             </div>
             <!-- boton para crear archivos -->
         <div class="d-flex align-items-center gap-2">
-            <a href="{{ route('archivos.creaRR') }}" class="btn btn-filter" type="button" style="border-radius: 15px;" title="Agregar nuevo archivo">
+            <a href="{{ route('archivos.creaRR', $escuela->id) }}" class="btn btn-filter" type="button" style="border-radius: 15px;" title="Agregar nuevo archivo">
                 <span id="aggregate-btn-text"></span>
                 <i class="bi bi-file-earmark-plus fs-3 text-primary"></i>
+            </a>
+        </div>
+        <!--boton crear carpeta-->
+        <div class="d-flex align-items-center gap-0">
+            <a href="{{ route('archivos.creaRR', $escuela->id) }}" class="btn btn-filter" type="button" style="border-radius: 15px;" title="Agregar nueva carpeta">
+                <span id="aggregate-btn-text"></span>
+                <i class="bi bi-folder-plus fs-3 text-primary"></i>
             </a>
         </div>
         </div>
