@@ -11,3 +11,5 @@ Route::post('/agregar/carpetas', [EscuelaController::class, 'ValidarCarpetasEscu
 Route::get('/escuelas/{escuela}', [EscuelaController::class, 'show'])->name('escuelas.show');
 Route::get('/crear/carpetasarchivos/{escuela}', [ArchivosController::class, 'CrearCarpetasA'])->name('archivos.creaRR');
 Route::post('/agregar/carpetasarchivos/{escuela}', [ArchivosController::class, 'ValidarCarpetasA'])->name('archivos.agg');
+Route::get('/archivos/{escuela}', [ArchivosController::class, 'show'])->name('archivos.show');
+Route::get('/archivos/{escuela}/carpeta/{carpeta}', [ArchivosController::class, 'showCarpeta'])->name('archivos.carpeta');
