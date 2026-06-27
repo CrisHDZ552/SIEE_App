@@ -30,6 +30,11 @@
         transform: translateY(-5px);
         box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
+    .folder-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        cursor: pointer;
+    }
     .file-icon {
         font-size: 3rem;
     }
@@ -104,9 +109,12 @@
                     <div class="card h-100 text-center @if($item['tipo'] == 'dir') folder-card @else file-card @endif" style="animation-delay: {{ $index * 50 }}ms;">
                         <div class="card-body d-flex flex-column justify-content-center align-items-center">
                             @if($item['tipo'] == 'dir')
-                                <i class="bi bi-folder-fill file-icon folder-icon mb-2"></i>
-                                <div class="card-title mt-2" title="{{ $item['nombre'] }}">{{ Str::limit($item['nombre'], 20) }}</div>
-                                <span class="badge bg-primary-subtle text-primary-emphasis rounded-pill fw-normal" style="font-size: 0.7rem;">Carpeta</span>
+                                <a href="{{ route('archivos.carpeta', ['escuela' => $escuela->id, 'carpeta' => $item['nombre']]) }}"
+                                   class="text-decoration-none text-reset d-flex flex-column align-items-center">
+                                    <i class="bi bi-folder-fill file-icon folder-icon mb-2"></i>
+                                    <div class="card-title mt-2" title="{{ $item['nombre'] }}">{{ Str::limit($item['nombre'], 20) }}</div>
+                                    <span class="badge bg-primary-subtle text-primary-emphasis rounded-pill fw-normal" style="font-size: 0.7rem;">Carpeta</span>
+                                </a>
                             @else
                                 @php
                                     $extension = strtolower(pathinfo($item['nombre'], PATHINFO_EXTENSION));
