@@ -42,6 +42,90 @@ class ArchivosController extends Controller
 
         return redirect()->route('escuelas.show', $escuela->id);
     }
+
+     public function show(Archivo $archivo)
+    {
+        // Obtener la carpeta de la escuela en public/archivos
+        $archivosPath = public_path('archivos');
+
+        // Buscar la carpeta de la escuela
+        $escuelaCarpeta = (string)$archivo->escuela_id;
+        $rutaCarpeta = $archivosPath . '/' . $escuelaCarpeta;
+
+        if (!File::isDirectory($rutaCarpeta)) {
+            return redirect('/')->with('error', 'Carpeta de escuela no encontrada');
+        }
+
+        // Obtener el contenido de la carpeta
+        $rutaCarpeta = $archivosPath . '/' . $escuelaCarpeta;
+        $contenido = [];
+
+        if (File::isDirectory($rutaCarpeta)) {
+            // Obtener tanto archivos como directorios
+            $items = File::files($rutaCarpeta);
+            $subdirectorios = File::directories($rutaCarpeta);
+
+            foreach ($items as $item) {
+                $contenido[] = [
+                    'nombre' => basename($item),
+                    'ruta' => 'archivos/' . $escuelaCarpeta . '/' . basename($item),
+                    'tipo' => 'file'
+                ];
+            }
+
+            foreach ($subdirectorios as $subdirectorio) {
+                $contenido[] = [
+                    'nombre' => basename($subdirectorio),
+                    'ruta' => 'archivos/' . $escuelaCarpeta . '/' . basename($subdirectorio),
+                    'tipo' => 'dir'
+                ];
+            }
+        }
+
+        return view('Archivos.showA', compact('archivo', 'contenido'));
+    }
+
+    public function showCarpeta(\App\Models\Escuela $escuela, $carpeta)
+    {
+        $archivosPath = public_path('archivos');
+        $numeroCarpeta = (string)$escuela->numero_escuela;
+        $rutaCarpeta = $archivosPath . '/' . $numeroCarpeta . '/' . $carpeta;
+
+        if (!File::isDirectory($rutaCarpeta)) {
+            return redirect()->route('escuelas.show', $escuela->id)->with('error', 'Carpeta no encontrada');
+        }
+
+        $contenido = [];
+        $items = File::files($rutaCarpeta);
+        $subdirectorios = File::directories($rutaCarpeta);
+
+        foreach ($items as $item) {
+            $contenido[] = [
+                'nombre' => basename($item),
+                'ruta'   => 'archivos/' . $numeroCarpeta . '/' . $carpeta . '/' . basename($item),
+                'tipo'   => 'file'
+            ];
+        }
+
+        foreach ($subdirectorios as $subdirectorio) {
+            $contenido[] = [
+                'nombre' => basename($subdirectorio),
+                'ruta'   => 'archivos/' . $numeroCarpeta . '/' . $carpeta . '/' . basename($subdirectorio),
+                'tipo'   => 'dir'
+            ];
+        }
+
+        // Creamos un objeto simple para la vista (nombre de la carpeta y escuela)
+        $archivo = (object)[
+            'id'             => null,
+            'nombre_carpeta' => $carpeta,
+            'contenido'      => $escuela->numero_escuela,
+            'escuela_id'     => $escuela->id,
+            'escuela'        => $escuela,
+        ];
+
+        return view('Archivos.showA', compact('archivo', 'contenido', 'escuela', 'carpeta'));
+    }
     
     
     //Todavia no se usa todo lo de abajo
