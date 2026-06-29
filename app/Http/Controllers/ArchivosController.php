@@ -43,49 +43,7 @@ class ArchivosController extends Controller
         return redirect()->route('escuelas.show', $escuela->id);
     }
 
-     public function show(Archivo $archivo)
-    {
-        // Obtener la carpeta de la escuela en public/archivos
-        $archivosPath = public_path('archivos');
-
-        // Buscar la carpeta de la escuela
-        $escuelaCarpeta = (string)$archivo->escuela_id;
-        $rutaCarpeta = $archivosPath . '/' . $escuelaCarpeta;
-
-        if (!File::isDirectory($rutaCarpeta)) {
-            return redirect('/')->with('error', 'Carpeta de escuela no encontrada');
-        }
-
-        // Obtener el contenido de la carpeta
-        $rutaCarpeta = $archivosPath . '/' . $escuelaCarpeta;
-        $contenido = [];
-
-        if (File::isDirectory($rutaCarpeta)) {
-            // Obtener tanto archivos como directorios
-            $items = File::files($rutaCarpeta);
-            $subdirectorios = File::directories($rutaCarpeta);
-
-            foreach ($items as $item) {
-                $contenido[] = [
-                    'nombre' => basename($item),
-                    'ruta' => 'archivos/' . $escuelaCarpeta . '/' . basename($item),
-                    'tipo' => 'file'
-                ];
-            }
-
-            foreach ($subdirectorios as $subdirectorio) {
-                $contenido[] = [
-                    'nombre' => basename($subdirectorio),
-                    'ruta' => 'archivos/' . $escuelaCarpeta . '/' . basename($subdirectorio),
-                    'tipo' => 'dir'
-                ];
-            }
-        }
-
-        return view('Archivos.showA', compact('archivo', 'contenido'));
-    }
-
-    public function showCarpeta(\App\Models\Escuela $escuela, $carpeta)
+    public function show(\App\Models\Escuela $escuela, $carpeta)
     {
         $archivosPath = public_path('archivos');
         $numeroCarpeta = (string)$escuela->numero_escuela;
@@ -132,31 +90,37 @@ class ArchivosController extends Controller
     }
     
     
-    //Todavia no se usa todo lo de abajo
-    public function CrearArchivosEscuelas()
-        {
-            return view('Archivos.CrearA');
-        }
-
-    public function ValidarArchivosEscuelas(Request $request)
+    public function AggArchivos(\App\Models\Escuela $escuela)
     {
-        $request->validate([     //Validar que los campos no esten vacios y max caracteres
-            'numero_escuela' => 'required|max:15|unique:escuelas,numero_escuela',
-            'ctt' => 'required|max:15',
+        return view('Archivos.Creararchivo', compact('escuela'));
+    }
+
+    public function ValidarArchivos(Request $request, \App\Models\Escuela $escuela)
+    {
+        $request->validate([ //Valida que los campos requeridos
+            'documento'      => 'required|mimes:jpeg,png,webp,jpg,pdf|max:2048',
         ]);
 
-        $escuela = new Escuela();
-        $escuela->numero_escuela = $request->numero_escuela; //Darle valor al objeto
-        $escuela->ctt = $request->ctt;
-        //$escuela->user_id = Auth::id();  //Guardar el usuario que creo la carpeta
-        $escuela->save();
+        $archivo = new Archivo();
+        $escuelaCarpeta = (string)$escuela->numero_escuela;
 
-        // Crear la carpeta en public/archivos
-        $folderName = $escuela->numero_escuela . '_' . uniqid();
-        $path = public_path('archivos/' . $folderName);
+        if ($request->hasFile('documento')) { //Si subieron un archivo
+            $file = $request->file('documento');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            
+            // Guarda físicamente el archivo en la carpeta de la escuela
+            $file->move(public_path('archivos/' . $escuelaCarpeta), $filename);
+            
+            // Guarda la ruta en la base de datos
+            $archivo->imagen = 'archivos/' . $escuelaCarpeta . '/' . $filename;
+            
+            // Llenamos los campos obligatorios de la tabla archivos para evitar un error
+            $archivo->nombre_carpeta = $filename;
+            $archivo->contenido      = 'Archivo subido';
+        }
+        
+        $archivo->save();
 
-        File::makeDirectory($path, 0755, true, true);
-
-        return redirect('escuelas.show');
+        return redirect()->route('escuelas.show', $escuela->id);
     }
 }
