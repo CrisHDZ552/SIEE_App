@@ -12,7 +12,7 @@ class ArchivosController extends Controller
 
     public function CrearCarpetasA(\App\Models\Escuela $escuela)
     {
-        return view('Archivos.CrearA', compact('escuela'));
+        return view('Archivos.CrearCarpeta', compact('escuela'));
     }
 
     public function ValidarCarpetasA(Request $request, \App\Models\Escuela $escuela)
@@ -115,16 +115,20 @@ class ArchivosController extends Controller
             ];
         }
 
+        // Buscamos el registro de la carpeta en la base de datos
+        $archivoDb = \App\Models\Archivo::where('nombre_carpeta', $carpeta)->first();
+        $contenidoReal = $archivoDb ? $archivoDb->contenido : 'Sin descripción';
+
         // Creamos un objeto simple para la vista (nombre de la carpeta y escuela)
         $archivo = (object)[
-            'id'             => null,
+            'id'             => $archivoDb ? $archivoDb->id : null,
             'nombre_carpeta' => $carpeta,
-            'contenido'      => $escuela->numero_escuela,
+            'contenido'      => $contenidoReal,
             'escuela_id'     => $escuela->id,
             'escuela'        => $escuela,
         ];
 
-        return view('Archivos.showA', compact('archivo', 'contenido', 'escuela', 'carpeta'));
+        return view('Archivos.VerCarpeta', compact('archivo', 'contenido', 'escuela', 'carpeta'));
     }
     
     
