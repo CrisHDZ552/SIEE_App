@@ -20,7 +20,7 @@
                 @csrf
                 <div class="mb-3">
                     <label for="documento" class="form-label">Selecciona un Documento</label>
-                    <input type="file" class="form-control" id="documento" name="documento" accept="documento/*">
+                    <input type="file" class="form-control" id="documento" name="documento" accept="image/jpeg, image/png, image/webp, application/pdf">
                 </div>
                 <button type="submit" class="btn btn-primary w-100">Crear Archivo</button>
             </form>
