@@ -211,6 +211,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-0">
+                <!--vista previa del navegador para img, doc, pdf-->
                 <iframe id="previewFrame" src="" style="width: 100%; height: 80vh; border: none;"></iframe>
             </div>
         </div>
