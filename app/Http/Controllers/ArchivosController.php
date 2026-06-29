@@ -106,7 +106,7 @@ class ArchivosController extends Controller
 
         if ($request->hasFile('documento')) { //Si subieron un archivo
             $file = $request->file('documento');
-            $filename = $file->getClientOriginalName();
+            $filename = time() . '_' . $file->getClientOriginalName();
             
             // Guarda físicamente el archivo en la carpeta de la escuela
             $file->move(public_path('archivos/' . $escuelaCarpeta), $filename);
